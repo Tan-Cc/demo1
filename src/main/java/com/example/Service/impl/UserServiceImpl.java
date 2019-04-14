@@ -5,6 +5,7 @@ import com.example.mapper.LocalauthMapper;
 import com.example.mapper.UsersMapper;
 import com.example.pojo.Localauth;
 import com.example.pojo.Users;
+import com.example.utils.MD5Utils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public Users registAndSave(Localauth loginMsg) {
+    public Users registAndSave(Localauth loginMsg) throws Exception {
         // 将login信息写入数据库
+        loginMsg.setUsername(loginMsg.getUsername());
+        loginMsg.setPassword(MD5Utils.getMD5Str(loginMsg.getPassword()));
         loginMsg.setId(sid.nextShort());
         loginMsg.setUserId(sid.nextShort());
         localauthMapper.insert(loginMsg);

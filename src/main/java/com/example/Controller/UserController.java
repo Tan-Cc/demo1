@@ -19,8 +19,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/registOrLogin")
-    public JSONResult registOrLogin(@RequestBody Localauth loginmsg) throws Exception {
+    @PostMapping("/Login")
+    public JSONResult Login(@RequestBody Localauth loginmsg) throws Exception {
 
         // 判断用户名密码是否为空
         if (StringUtils.isBlank(loginmsg.getUsername()) || StringUtils.isBlank(loginmsg.getPassword())) {
@@ -39,11 +39,19 @@ public class UserController {
             if (userResult == null) {
                 return JSONResult.errorMsg("用户名密码不正确！");
             }
+
+            return JSONResult.ok(userResult);
         } else {
-            //如果不存在，则注册
-            userResult = userService.registAndSave(loginmsg);
+            //如果不存在
+            return JSONResult.errorMsg("用户名不存在！");
         }
 
+
+    }
+
+    @PostMapping("/regist")
+    public JSONResult regist(@RequestBody Localauth loginmsg) throws Exception {
+        Users userResult = userService.registAndSave(loginmsg);
         return JSONResult.ok(userResult);
     }
 }

@@ -9,5 +9,5 @@ public interface UserService {
 
     Users queryForLogin(String username, String pwd);
 
-    Users registAndSave(Localauth loginMsg);
+    Users registAndSave(Localauth loginMsg) throws Exception;
 }
